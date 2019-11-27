@@ -1,0 +1,12 @@
+.login {
+    
+    margin: 50px auto;
+    max-width: 350px;
+    flex: 1;
+    background-color: #5e555525;
+    padding: 15px;
+    border-radius: 5px;
+}
+.form-group{
+    width: 100%;
+}

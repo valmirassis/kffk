@@ -10,3 +10,10 @@
 .form-group{
     width: 100%;
 }
+.navbar .nav-link{
+    color: #005060!important;
+/* background-color: #9c5252; */
+}
+.navbar .nav-link:hover{
+color: #b69054!important;
+}

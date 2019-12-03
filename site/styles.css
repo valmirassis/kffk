@@ -17,6 +17,9 @@
 .form-group{
     width: 100%;
 }
+#carousel {
+    margin-top: 40px;
+}
 .navbar .nav-link{
     color: #005060!important;
 /* background-color: #9c5252; */
@@ -39,4 +42,5 @@ p {
 }
 .content {
     height: 400px;
+    margin-top: 10px;
 }

@@ -37,8 +37,7 @@ if ($nome!="" and $mensagem!="" and $email!="")
 			echo "Obrigado por entrar em contato!</center></h4>";
 		//Enviando mensagem de confirmação para o email do internauta
 		$site   = "Assis@rediscover.com.br"; 
-		$msg2    = "Olá $nome, recebemos sua mensagem: <br> $msg <br> Em breve lhe retornaremos o contato.\n Att. \n KFFK Empreendimentos <br>
-		(47) 99264-9157";
+		$msg2    = "Olá $nome, recebemos sua mensagem: <br> $msg <br> Em breve lhe retornaremos o contato. <br> Att. <br> KFFK Empreendimentos - (47) 99264-9157";
 		@ mail ($email, "Contato pelo site: ".$assunto, $msg2, $mail_header2);
 /*		mail("$email",
      "Re: Contato pelo site",

@@ -60,15 +60,27 @@ function openKCFinder(field) {
         <div class="card-body">
             <?php
                 if(isset($_GET['empresa'])){
-                    echo "<h1>Empresa</h1>";    
+                    echo "<h1>Empresa</h1>";  
+                    $sql = mysqli_query($link,"SELECT * FROM paginas WHERE cod=1") or die ("Houve erro na gravação dos dados" . mysqli_error());  
+                    $dados = mysqli_fetch_array($sql);
+                    $empresa = $dados['conteudo'];
+                
                     ?>
                     <form action="?empresa" method="post">
-                    <textarea class="ckeditor" name="conteudo" ></textarea>
-                    <input type="submit" name="salvar" value="Salvar" class="btn btn-warning">
+                    <textarea class="ckeditor" name="empresa" ><?php echo $empresa ?></textarea>
+                    <input type="hidden" value="1" name="cod">
+                    <br>
+                    <input type="submit" name="salvar" value="Salvar" class="btn btn-warning btn-block">
                 </fom>
                 <?php
                     if(isset($_POST['salvar'])){
-                        echo "<br>Página alterada";
+                        $empresa = $_POST['empresa'];
+                        $cod = $_POST['cod'];
+                        $sql = mysqli_query($link,"UPDATE paginas SET conteudo='$empresa' WHERE cod=$cod") or die ("Houve erro na gravação dos dados" . mysqli_error());
+                        if ($sql){
+                        echo "<br>Página alterada!";
+                        echo "<meta http-equiv='refresh' content='0;URL=home.php?empresa'> ";
+                        }
                     }
                 } else if (isset($_GET['empreendimentos'])) {
                     echo "<h1>Empreendimentos</h1>";

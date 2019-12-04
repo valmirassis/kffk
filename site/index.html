@@ -64,7 +64,7 @@
                           <a class="nav-link anima" href="#"><i class="fas fa-archive"></i> Oportunidades</a>
                       </li>             
                         <li class="nav-item">
-                                <a class="nav-link anima" href="#"><i class="fas fa-envelope"></i> Contato</a>
+                                <a class="nav-link anima" href="#contato"><i class="fas fa-envelope"></i> Contato</a>
                         </li>    
                   </ul>
                 </div>
@@ -99,11 +99,80 @@
                         </a>
                       </div>
 
-
+<section>
 <div class="container content">
-    <h1>Novos Empreendimentos</h1>
+    <h1><i class="fas fa-building"></i> Novos Empreendimentos</h1>
     <p>Página em construção</p>
+
 </div>
+</section>
+<section id="contato">
+  <div class="container">
+      <div class="row">
+       
+              <h1><i class="fa fa-envelope" aria-hidden="true" aria-hidden="true"></i> Entre em Contato</h1>
+            <form action="" onsubmit="return enviar_contato(this); return false;" method="POST" name="frmcontato" id="formcontato">
+             
+            </div>     
+              <div class="row">
+                  <div class="col-sm">
+                      <div class="input-group input-group2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text" id="btnGroupAddon"><i class="fa fa-user" aria-hidden="true"></i></div>
+                          </div>
+                          <input type="text" class="form-control" placeholder="Informe seu Nome" aria-label="Informe seu Nome" aria-describedby="btnGroupAddon" name="inputNome">
+                        </div>
+                        <div class="input-group input-group2">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text" id="btnGroupAddon"><i class="fa fa-at" aria-hidden="true"></i></span></div>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Informe seu Email" aria-label="Informe seu Email" aria-describedby="btnGroupAddon" name="inputEmail">
+                          </div>
+                          <div class="input-group input-group2">
+                              <div class="input-group-prepend">
+                                <div class="input-group-text" id="btnGroupAddon"><i class="fa fa-phone" aria-hidden="true"></i></div>
+                              </div>
+                              <input type="text" class="form-control" placeholder="Informe seu Telefone" aria-label="Informe seu Telefone" aria-describedby="btnGroupAddon" name="inputTel">
+                            </div>
+                            <div class="input-group input-group2">
+                                <div class="input-group-prepend">
+                                  <div class="input-group-text" id="btnGroupAddon"><i class="fa fa-tag" aria-hidden="true"></i></div>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Informe o Assunto" aria-label="Informe o Assunto" aria-describedby="btnGroupAddon" name="inputAssunto">
+                              </div>
+                      </div>
+
+                      
+                
+                  <div class="col-sm">
+
+                      <div class="input-group input-group2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text" id="btnGroupAddon"><i class="fa fa-tag" aria-hidden="true"></i></div>
+                          </div>
+                          <textarea class="form-control textarea" placeholder="Mensagem" required name="inputMensagem"></textarea>
+                        </div>
+  
+                      <div class="input-group input-group2">
+                      <button type="submit" class="btn btn-warning btn-block"><i class="fa fa-send" aria-hidden="true"></i> Enviar E-mail</button>
+                      </div>
+                  </div>
+              </div>
+            
+              </form>
+               
+                  <div class="row">
+                   <div class="col-xs-12" id="result">
+                  
+                  </div>
+                   </div>
+              
+          </div>
+      
+  
+    
+  
+  </section>
 <footer>
   
   <div class="container">
@@ -113,12 +182,13 @@
     </div>
     <div class="col-sm">
       <h1>Contato</h1>
-      <p><i class="fab fa-whatsapp-square"></i> (47) 99999-9999</p>
-      <p><i class="fas fa-phone-square"></i> (47) 3333-3333</p>
+      <p><i class="fab fa-whatsapp-square"></i> <a href="https://api.whatsapp.com/send?phone=5547992649157&text=Ol%C3%A1" >+55 47 99264-9157 </a></p>
+      <p><i class="fa fa-at"></i> <a href="#contato">financeiro@kffk.com.br</a></p>
       <p><i class="fab fa-facebook-square"></i> <a href="https://www.facebook.com/KFFKEMPREENDIMENTOS" target="_blank">/KFFKEMPREENDIMENTOS</p>
     </div>
   </div>
 </footer>
+<script src="main.js"></script>
 </body>
 
 </html>

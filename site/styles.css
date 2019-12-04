@@ -3,7 +3,9 @@
    v2.0 | 20110126
    License: none (public domain)
 */
-
+body {
+    background-image: url(img/pontinho.png);
+}
 
 .login {
     
@@ -44,3 +46,7 @@ p {
     height: 400px;
     margin-top: 10px;
 }
+.input-group2 {
+    margin: 5px;}
+.input-group2 textarea {height: 120px;}
+.btn-margin {margin: 5px;}

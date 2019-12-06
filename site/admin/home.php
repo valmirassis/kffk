@@ -46,7 +46,15 @@ function openKCFinder(field) {
     </div>
     <ul class="list-group list-group-flush">
         <li class="list-group-item"><a href="?empresa">Empresa</a></li>
-        <li class="list-group-item"><a href="?empreendimentos">Empreendimentos</a></li>
+        <li class="list-group-item"><a href="?empreendimentos">Empreendimentos</a>
+            <ul>
+                <li><a href="?empreendimentos&listar">Listar</a></li>
+                <li><a href="?empreendimentos&cadastrar">Cadastrar</a></li>
+
+                
+            </ul>
+       </li>
+
         <li class="list-group-item"><a href="?oportunidades">Oportunidades</a></li>
         <li class="list-group-item"><a href="logoff.php">Sair</a></li>
     </ul>
@@ -84,6 +92,37 @@ function openKCFinder(field) {
                     }
                 } else if (isset($_GET['empreendimentos'])) {
                     echo "<h1>Empreendimentos</h1>";
+                    if (isset($_GET['cadastrar'])){
+                        ?>
+                    <form action="empreendimentos.php" method="post">
+                    <input type="text" name="nome" placeholder="Nome" class="form-control input-group2">
+                    <input type="text" name="localizacao" placeholder="Localização" class="form-control input-group2">
+                     Concluído:  <input type="radio" name="concluido" class="" value="1"> Sim  <input type="radio" name="concluido" class="" value="0"> Não <br>
+                     Publicar:  <input type="radio" name="publicar" class="" value="1"> Sim  <input type="radio" name="publicar" class="" value="0"> Não
+                   <input type="text" name="status" placeholder="Status" class="form-control input-group2">
+                    <textarea class="ckeditor" name="descricao" class="form-control input-group2"></textarea>
+                    <input type="hidden" value="1" name="cod">
+                    <br>
+                    <input type="submit" name="cadastrar" value="Cadastrar" class="btn btn-warning btn-block">
+                </fom>
+                        <?php
+                    } else {
+                        $sqlv = mysqli_query($link,"SELECT * FROM empreendimento ORDER BY cod DESC") or die("ERRO NO SQL");
+                        $rowv = mysqli_num_rows($sqlv);
+
+                    while($rowv = mysqli_fetch_assoc($sqlv)){
+                    $status = $rowv['status'];
+                    $concluido = $rowv['concluido'];
+                    $publicar = $rowv['publicar'];
+                    $nome = $rowv['nome'];
+                    $localizacao = $rowv['localizacao'];
+echo "<div class='alert alert-dark' role='alert'>   $nome - $localizacao <br>";
+echo "Concluido: ".$concluido = 1 ? "Sim" : "Não";
+echo " | Publicar: ".$publicar = 1 ? "Sim" : "Não";
+echo "</div>";
+}
+                    }
+                    
               
                 } else if (isset($_GET['oportunidades'])) {
                     echo "<h1>Oportunidades</h1>";

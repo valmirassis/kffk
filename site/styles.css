@@ -53,3 +53,5 @@ p {
 section {
     margin-bottom: 30px;
 }
+.destaque {display: flex;
+justify-content: space-between;}

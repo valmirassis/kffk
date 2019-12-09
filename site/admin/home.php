@@ -90,9 +90,9 @@ function openKCFinder(field) {
                         echo "<meta http-equiv='refresh' content='0;URL=home.php?empresa'> ";
                         }
                     }
-                } else if (isset($_GET['empreendimentos'])) {
+                } else if (isset($_GET['empreendimentos'])) { //Página empreendimentos
                     echo "<h1>Empreendimentos</h1>";
-                    if (isset($_GET['cadastrar'])){
+                    if (isset($_GET['cadastrar'])){ // formulário de cadastro de empreendimentos
                         ?>
                     <form action="empreendimentos.php" method="post">
                     <input type="text" name="nome" placeholder="Nome" class="form-control input-group2">
@@ -104,51 +104,62 @@ function openKCFinder(field) {
                     <input type="hidden" value="1" name="cod">
                     <br>
                     <input type="submit" name="cadastrar" value="Cadastrar" class="btn btn-warning btn-block">
-                </fom>
+                </form>
                         <?php
-                    } if (isset($_GET['editar'])){
-                        $sqlv = mysqli_query($link,"SELECT * FROM empreendimento where cod=$_GET['cod']") or die("ERRO NO SQL");
+                    } if (isset($_GET['editar'])){ // formulário de edição de empreendimentos
+                        $cod = $_GET['cod'];
+                        $sqlv = mysqli_query($link,"SELECT * FROM empreendimento where cod='$cod'") or die("ERRO NO SQL");
                         $dados = mysqli_fetch_array($sqlv);
                         $nome = $dados['nome'];
                         $localizacao = $dados['localizacao'];
                         $status = $dados['status'];
+                        $publicar = $dados['publicar'];
                         $descricao = $dados['descricao'];
                         $concluido = $dados['concluido'];
                         ?>
                     <form action="empreendimentos.php" method="post">
+                    Nome: 
                     <input type="text" name="nome" placeholder="Nome" value="<?php echo $nome; ?>" class="form-control input-group2">
+                    Localização:
                     <input type="text" name="localizacao" value="<?php echo $localizacao; ?>"  placeholder="Localização" class="form-control input-group2">
-                     Concluído:  <input type="radio" name="concluido" class="" value="1" <?php echo $concluido = 1 ? "checked" : "";?> >Sim  <input type="radio" name="concluido" class="" value="0" <?php echo $concluido = 0 ? "checked" : "";?>> Não <br>
-                     Publicar:  <input type="radio" name="publicar" class="" value="1" <?php echo $status = 1 ? "checked" : "";?>> Sim  <input type="radio" name="publicar" class="" value="0" <?php echo $status = 0 ? "checked" : "";?>> Não
-                   <input type="text" name="status" placeholder="Status" class="form-control input-group2">
+                     Concluído:  <input type="radio" name="concluido" class="" value="1" <?php echo $concluido == 1 ? "checked" : "";?> >Sim  <input type="radio" name="concluido" class="" value="0" <?php echo $concluido == 0 ? "checked" : "";?>> Não <br>
+                     Publicar:  <input type="radio" name="publicar" class="" value="1" <?php echo $publicar == 1 ? "checked" : "";?>> Sim  <input type="radio" name="publicar" class="" value="0" <?php echo $publicar == 0 ? "checked" : "";?>> Não
+                 <br>  Status: <input type="text" name="status" placeholder="Status" class="form-control input-group2" value="<?php echo $status; ?>" >
                     <textarea class="ckeditor" name="descricao" class="form-control input-group2"><?php echo $descricao; ?> </textarea>
                     <input type="hidden" value="<?php echo $_GET['cod']; ?>" name="cod">
                     <br>
                     <input type="submit" name="editar" value="Salvar" class="btn btn-warning btn-block">
-                </fom>
+                </form>
                         <?php
                     } 
                     
-                    else {
+                    else { // Listar empreendimentos cadastrados
                         $sqlv = mysqli_query($link,"SELECT * FROM empreendimento ORDER BY cod DESC") or die("ERRO NO SQL");
                         $rowv = mysqli_num_rows($sqlv);
 
                     while($rowv = mysqli_fetch_assoc($sqlv)){
                         $cod = $rowv['cod'];
                     $status = $rowv['status'];
-                    $concluido = $rowv['concluido'];
-                    $publicar = $rowv['publicar'];
+                    $concluido = $rowv['concluido'] == '1' ? "Sim" : "Não";
+                    $publicar = $rowv['publicar'] == '1' ? "Sim" : "Não";
                     $nome = $rowv['nome'];
                     $localizacao = $rowv['localizacao'];
-echo "<div class='alert alert-dark' role='alert'>   $nome - $localizacao <br>";
-echo "Concluido: ".$concluido = 1 ? "Sim" : "Não";
-echo " | Publicar: ".$publicar = 1 ? "Sim" : "Não";
-echo "<a href='home.php?empreendimentos&editar&cod=$cod'><i class='fas fa-edit'></i></a></div>";
+echo "<div class='alert alert-dark destaque' role='alert'> 
+        <div>  $nome - $localizacao <br>";
+echo "Concluido: ".$concluido;
+echo " | Publicar: ".$publicar; 
+echo "</div><div>";
+echo "<a href='home.php?empreendimentos&editar&cod=$cod'><i class='fas fa-edit'></i></a>
+<a href='empreendimentos.php?imagens&cod=$cod'><i class='fas fa-image'></i></a>
+<a href='empreendimentos.php?videos&cod=$cod''><i class='fab fa-youtube'></i></a>
+
+
+</div></div>";
 }
                     }
                     
               
-                } else if (isset($_GET['oportunidades'])) {
+                } else if (isset($_GET['oportunidades'])) { // Página oportunidades
                     echo "<h1>Oportunidades</h1>";
                 } else {
                     echo "Selecione um item no menu ao lado";

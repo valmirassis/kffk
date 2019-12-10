@@ -20,8 +20,8 @@ $cod = $_POST['cod'];
 
 $dir = "fotos/$num/";
 //tamanhos para criar as thumbs
-$largura_final = 230;
-$altura_final  = 170;
+$largura_final = 330;
+$altura_final  = 240;
 
 @mkdir($dir);
 

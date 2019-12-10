@@ -95,12 +95,12 @@ function openKCFinder(field) {
                     if (isset($_GET['cadastrar'])){ // formulário de cadastro de empreendimentos
                         ?>
                     <form action="empreendimentos.php" method="post">
-                    <input type="text" name="nome" placeholder="Nome" class="form-control input-group2">
-                    <input type="text" name="localizacao" placeholder="Localização" class="form-control input-group2">
+                     Nome: <input type="text" name="nome" placeholder="Nome" class="form-control input-group2">
+                     Localização: <input type="text" name="localizacao" placeholder="Localização" class="form-control input-group2">
                      Concluído:  <input type="radio" name="concluido" class="" value="1"> Sim  <input type="radio" name="concluido" class="" value="0"> Não <br>
                      Publicar:  <input type="radio" name="publicar" class="" value="1"> Sim  <input type="radio" name="publicar" class="" value="0"> Não
                    <input type="text" name="status" placeholder="Status" class="form-control input-group2">
-                    <textarea class="ckeditor" name="descricao" class="form-control input-group2"></textarea>
+                    Detalhes: <textarea class="ckeditor" name="descricao" class="form-control input-group2"></textarea>
                     <input type="hidden" value="1" name="cod">
                     <br>
                     <input type="submit" name="cadastrar" value="Cadastrar" class="btn btn-warning btn-block">
@@ -125,6 +125,7 @@ function openKCFinder(field) {
                      Concluído:  <input type="radio" name="concluido" class="" value="1" <?php echo $concluido == 1 ? "checked" : "";?> >Sim  <input type="radio" name="concluido" class="" value="0" <?php echo $concluido == 0 ? "checked" : "";?>> Não <br>
                      Publicar:  <input type="radio" name="publicar" class="" value="1" <?php echo $publicar == 1 ? "checked" : "";?>> Sim  <input type="radio" name="publicar" class="" value="0" <?php echo $publicar == 0 ? "checked" : "";?>> Não
                  <br>  Status: <input type="text" name="status" placeholder="Status" class="form-control input-group2" value="<?php echo $status; ?>" >
+                   Detalhes:
                     <textarea class="ckeditor" name="descricao" class="form-control input-group2"><?php echo $descricao; ?> </textarea>
                     <input type="hidden" value="<?php echo $_GET['cod']; ?>" name="cod">
                     <br>

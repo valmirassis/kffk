@@ -45,17 +45,22 @@ function openKCFinder(field) {
     Administração
     </div>
     <ul class="list-group list-group-flush">
-        <li class="list-group-item"><a href="?empresa">Empresa</a></li>
-        <li class="list-group-item"><a href="?empreendimentos">Empreendimentos</a>
+        <li class="list-group-item"><a href="home.php?empresa">Empresa</a></li>
+        <li class="list-group-item"><a href="home.php?empreendimentos">Empreendimentos</a>
             <ul>
-                <li><a href="?empreendimentos&listar">Listar</a></li>
-                <li><a href="?empreendimentos&cadastrar">Cadastrar</a></li>
+                <li><a href="home.php?empreendimentos&listar">Listar</a></li>
+                <li><a href="home.php?empreendimentos&cadastrar">Cadastrar</a></li>
 
                 
             </ul>
        </li>
 
-        <li class="list-group-item"><a href="?oportunidades">Oportunidades</a></li>
+       <li class="list-group-item"><a href="home.php?oportunidades">Oportunidades</a>
+        <ul>
+                <li><a href="home.php?oportunidades&listar">Listar</a></li>
+                <li><a href="home.php?oportunidades&cadastrar">Cadastrar</a></li>                
+            </ul>
+    </li>
         <li class="list-group-item"><a href="logoff.php">Sair</a></li>
     </ul>
     </div>
@@ -63,7 +68,12 @@ function openKCFinder(field) {
     <div class="col-9">
     <div class="card">
     <div class="card-header bg-warning">
-    Administração
+        Gerenciar
+  <?php 
+  echo (isset($_GET['empreendimentos'])) ? "<b>Empreendimentos</b>" : '';
+  echo (isset($_GET['oportunidades'])) ? "<b>Oportunidades</b>" : '';
+
+  ?>
     </div>
         <div class="card-body">
             <?php
@@ -159,9 +169,71 @@ echo "<a href='home.php?empreendimentos&editar&cod=$cod'><i class='fas fa-edit'>
 }
                     }
                     
-              
-                } else if (isset($_GET['oportunidades'])) { // Página oportunidades
+            //   ##########################################################################################################################
+                } else if (isset($_GET['oportunidades']))  { //Página oportunidades
                     echo "<h1>Oportunidades</h1>";
+                    if (isset($_GET['cadastrar'])){ // formulário de cadastro de oportunidades
+                        ?>
+                    <form action="oportunidades.php" method="post">
+                     Nome: <input type="text" name="nome" placeholder="Nome" class="form-control input-group2">
+                     Localização: <input type="text" name="localizacao" placeholder="Localização" class="form-control input-group2">
+                     Publicar:  <input type="radio" name="publicar" class="" value="1"> Sim  <input type="radio" name="publicar" class="" value="0"> Não
+                   <br>  Detalhes: <textarea class="ckeditor" name="descricao" class="form-control input-group2"></textarea>
+                  
+                    <br>
+                    <input type="submit" name="cadastrar" value="Cadastrar" class="btn btn-warning btn-block">
+                </form>
+                        <?php
+                    } if (isset($_GET['editar'])){ // formulário de edição de oportunidades
+                        $cod = $_GET['cod'];
+                        $sqlv = mysqli_query($link,"SELECT * FROM oportunidade where cod='$cod'") or die("ERRO NO SQL");
+                        $dados = mysqli_fetch_array($sqlv);
+                        $nome = $dados['nome'];
+                        $localizacao = $dados['localizacao'];
+                        $publicar = $dados['publicar'];
+                        $descricao = $dados['descricao'];
+                        ?>
+                    <form action="oportunidades.php" method="post">
+                    Nome: 
+                    <input type="text" name="nome" placeholder="Nome" value="<?php echo $nome; ?>" class="form-control input-group2">
+                    Localização:
+                    <input type="text" name="localizacao" value="<?php echo $localizacao; ?>"  placeholder="Localização" class="form-control input-group2">
+                     Publicar:  <input type="radio" name="publicar" class="" value="1" <?php echo $publicar == 1 ? "checked" : "";?>> Sim  <input type="radio" name="publicar" class="" value="0" <?php echo $publicar == 0 ? "checked" : "";?>> Não
+                <br>
+                   Detalhes:
+                    <textarea class="ckeditor" name="descricao" class="form-control input-group2"><?php echo $descricao; ?> </textarea>
+                    <input type="hidden" value="<?php echo $_GET['cod']; ?>" name="cod">
+                    <br>
+                    <input type="submit" name="editar" value="Salvar" class="btn btn-warning btn-block">
+                </form>
+                        <?php
+                    } 
+                    
+                    else { // Listar empreendimentos cadastrados
+                        $sqlv = mysqli_query($link,"SELECT * FROM oportunidade ORDER BY cod DESC") or die("ERRO NO SQL");
+                        $rowv = mysqli_num_rows($sqlv);
+                        if ($rowv == 0) {
+                            echo "Não há oportunidades cadastradas";
+                        }
+                    while($rowv = mysqli_fetch_assoc($sqlv)){
+                        $cod = $rowv['cod'];                                   
+                    $publicar = $rowv['publicar'] == '1' ? "Sim" : "Não";
+                    $nome = $rowv['nome'];
+                    $localizacao = $rowv['localizacao'];
+echo "<div class='alert alert-dark destaque' role='alert'> 
+        <div>  $nome - $localizacao <br>";
+echo "  Publicar: ".$publicar; 
+echo "</div><div>";
+echo "<a href='home.php?oportunidades&editar&cod=$cod'><i class='fas fa-edit'></i></a>
+<a href='oportunidades.php?imagens&cod=$cod'><i class='fas fa-image'></i></a>
+<a href='oportunidades.php?videos&cod=$cod''><i class='fab fa-youtube'></i></a>
+
+
+</div></div>";
+}
+                    }
+                    
+              
                 } else {
                     echo "Selecione um item no menu ao lado";
                 }

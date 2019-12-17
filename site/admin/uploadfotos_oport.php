@@ -9,8 +9,6 @@ include ('../conecta.php');
 </head>
 <body>
 
-<h3 class="titulo">Inserir fotos</h3>
-
 <?php
 
 if(isset($_GET['upload'])){
@@ -18,7 +16,7 @@ $num    = $_POST['cod'];
 $campos = $_POST['campos'];
 $cod = $_POST['cod'];
 
-$dir = "fotos/empreendimentos/$num/";
+$dir = "fotos/oportunidades/$num/";
 //tamanhos para criar as thumbs
 $largura_final = 330;
 $altura_final  = 240;
@@ -46,7 +44,9 @@ $quanti--;
 $y = $filez3[$quanti];
 $y = substr($y, -2);
 
-closedir($handle);}
+closedir($handle);} else {
+      echo "erro na bagaça";
+}
 
 $f_name = $_FILES['file']['name'];
 $f_tmp  = $_FILES['file']['tmp_name'];
@@ -120,7 +120,7 @@ if ( ($name!="") and (is_file($f_tmp[$i]))){
                 if ($up==true):
                         echo  "<i>Enviado!</i>";
                           $cont++;
-                                $qry = mysqli_query($link,"INSERT INTO emp_fotos (`cod`, `cod_emp`,`titulo`,`descricao`,`nome_foto`,`nome_thumb`) 
+                                $qry = mysqli_query($link,"INSERT INTO oport_fotos (`cod`, `cod_oport`,`titulo`,`descricao`,`nome_foto`,`nome_thumb`) 
                                 VALUES ('', '$cod','$titulo','$descr','$nome','$nome_thumb')") or die ("Erro no SQL fotos".mysqli_error());
 
                 else:
@@ -132,25 +132,25 @@ if ( ($name!="") and (is_file($f_tmp[$i]))){
 }
 
 echo ($cont!=0) ? "<script>alert(\"Total de arquivos enviados: $cont\");
-           location.href=\"empreendimentos.php?imagens&cod=$cod\"</script>": "<script>alert(\"Nenhum arquivo foi enviado!\");
-           location.href=\"empreendimentos.php?imagens&cod=$cod\"</script>";
+           location.href=\"oportunidades.php?imagens&cod=$cod\"</script>": "<script>alert(\"Nenhum arquivo foi enviado!\");
+           location.href=\"oportunidades.php?imagens&cod=$cod\"</script>";
 //}
 
 } else if (isset($_GET['excluir'])){
       $cod = $_GET['cod'];
-$sql0 = mysqli_query($link,"SELECT * FROM emp_fotos  WHERE `cod`='$cod'") or die ("Erro do Mysql ".mysqli_error());
+$sql0 = mysqli_query($link,"SELECT * FROM oport_fotos  WHERE `cod`='$cod'") or die ("Erro do Mysql ".mysqli_error());
 $row0 = mysqli_num_rows($sql0);
 while ($row0 = mysqli_fetch_assoc($sql0)){
 $cod0 = $row0['cod'];
-$codpt = $row0['cod_emp'];
-$foto = "fotos/empreendimentos/".$codpt."/".$row0['nome_foto'];
-$thumb= "fotos/empreendimentos/".$codpt."/".$row0['nome_thumb'];
+$codpt = $row0['cod_oport'];
+$foto = "fotos/oportunidades/".$codpt."/".$row0['nome_foto'];
+$thumb= "fotos/oportunidades/".$codpt."/".$row0['nome_thumb'];
 unlink($foto);
 unlink($thumb);}
-$sql="DELETE FROM `emp_fotos` WHERE `cod`='$cod'";
+$sql="DELETE FROM `oport_fotos` WHERE `cod`='$cod'";
 $resultado = mysqli_query($link,$sql) or die("Erro ao excluir: " . mysqli_error());
 echo "<script>JavaScript:alert('Foto excluida com sucesso!');</script>";
-echo "<meta http-equiv='refresh' content='0;URL=empreendimentos.php?imagens&cod=$codpt'> ";
+echo "<meta http-equiv='refresh' content='0;URL=oportunidades.php?imagens&cod=$codpt'> ";
 }
 ?>
 </body>

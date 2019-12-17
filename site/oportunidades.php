@@ -4,7 +4,7 @@
     <?php  include ('conecta.php'); ?>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Kffk Empreendimentos</title>
+<title>Kffk Oportunidades</title>
 <link rel="apple-touch-icon" sizes="57x57" href="img/icon/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="img/icon/apple-icon-60x60.png">
 <link rel="apple-touch-icon" sizes="72x72" href="img/icon/apple-icon-72x72.png">
@@ -27,7 +27,10 @@
 <link rel="stylesheet" href="styles.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
 
+<link href="https://unpkg.com/nanogallery2/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="https://unpkg.com/nanogallery2/dist/jquery.nanogallery2.min.js"></script>
 </head>
 <body>
   <header>
@@ -103,41 +106,74 @@
 <section>
 <div class="container content">
   <div class="row"> <div class="col">
-    <h1><i class="fas fa-building"></i> Novos Empreendimentos</h1>
+    <h1><i class="fas fa-building"></i> Nossas Oportunidades</h1>
   </div>
 </div>
 <div class="row">
                   <div class="col">
                  
-                 <?php     
-              $sqlv = mysqli_query($link,"SELECT * FROM empreendimento WHERE publicar=1 ORDER BY cod DESC LIMIT 0,5") or die ("Houve erro na gravação dos dados" . mysqli_error());  
-              $rowv = mysqli_num_rows($sqlv);
-
-              while($rowv = mysqli_fetch_assoc($sqlv)){
-              $cod_emp = $rowv['cod'];
-              $status = $rowv['status'];
-              $descricao = $rowv['descricao'];
-              $concluido = $rowv['concluido'] == '1' ? "Sim" : "Não";
-              $nome = $rowv['nome'];
-              $localizacao = $rowv['localizacao'];
+                 <?php 
+                
+                 $sql = mysqli_query($link,"SELECT * FROM oportunidade WHERE publicar=1 ORDER BY cod DESC LIMIT 0,5") or die ("Houve erro na seleção dos dados" . mysqli_error());
+              $row = mysqli_num_rows($sql);
+                 if($row == 0) {
+                   echo "Não temos nenhuma oportunidade no momento.";
+                 } else {
+              while($row = mysqli_fetch_assoc($sql)){
+              $cod_oport = $row['cod'];
+              $descricao = $row['descricao'];              
+              $nome = $row['nome'];
+              $localizacao = $row['localizacao'];
 
               echo "<div class='empreendimento'><h3>".$nome." - ".$localizacao."</h3>";
+              
                 echo "$descricao";
-              $sqlf = mysqli_query($link,"SELECT * FROM emp_fotos WHERE cod_emp=$cod_emp ORDER BY cod DESC LIMIT 0,5") or die ("Houve erro na gravação dos dados" . mysqli_error());  
+  
+            
+              $sqlf = mysqli_query($link,"SELECT * FROM oport_fotos WHERE cod_oport=$cod_oport ORDER BY cod DESC") or die ("Houve erro na gravação dos dados" . mysqli_error());  
               $rowf = mysqli_num_rows($sqlf);
-                echo "<div class='imagens'>";
+                
+                ?>
+      <div ID="ngy2<?php echo $cod_oport ?>" data-nanogallery2='{
+        "itemsBaseURL": "",
+        "thumbnailWidth": "200",
+        "thumbnailDisplayTransition": "slideUp2",
+        "thumbnailLabel": {
+          "position": "overImageOnTop",
+          "align": "left",
+          "titleMultiLine": true,
+          "descriptionMultiLine": true
+        },
+        "allowHTMLinData": true,
+        "thumbnailHoverEffect2": "image_blur_0px_5px_1000|label_translateX_1_1_1000|label_font-size_1em_2em_2000",
+        "thumbnailAlignment": "center",
+        "galleryFilterTags": true,
+        "thumbnailLevelUp": true
+      }'>
+
+    
+                <?php
               while($rowf = mysqli_fetch_assoc($sqlf)){
                 $nome_foto = $rowf['nome_foto'];
+                $titulo= $rowf['titulo'];
                 $nome_thumb = $rowf['nome_thumb'];
                 $descricao_foto = $rowf['descricao'];
-
-                echo "<img src='admin/fotos/$cod_emp/$nome_thumb'>";
+                echo "<a href='admin/fotos/oportunidades/$cod_oport/$nome_foto' data-ngthumb='admin/fotos/oportunidades/$cod_oport/$nome_thumb' data-ngdesc='$descricao_foto'>$titulo</a>";
               
               }
-              echo "</div>";  
-              echo "<br><a href='empreendimentos.php?detalhes-empreendimento&cod=$cod_emp' class='btn btn-outline-secondary btn-center'>Saiba mais</a> 
-              </div>";
+              $sqlv = mysqli_query($link,"SELECT * FROM oport_videos WHERE cod_oport=$cod_oport ORDER BY cod DESC") or die ("Houve erro na gravação dos dados" . mysqli_error());  
+              $rowv = mysqli_num_rows($sqlv);
+               
+              while($rowv = mysqli_fetch_assoc($sqlv)){
+                $nome_video = $rowv['nome'];
+                $id_youtube = $rowv['id_youtube'];
+                $descricao_video = $rowv['descricao'];
+                echo "<a href='https://www.youtube.com/watch?v=$id_youtube' data-ngthumb='https://www.youtube.com/watch?v=$id_youtube' data-ngdesc='$descricao_video'>$nome_video</a>";
+             
               }
+              echo "</div></div>";
+              }
+            }
             ?>
                  </div>
               

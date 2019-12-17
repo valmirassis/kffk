@@ -27,7 +27,10 @@
 <link rel="stylesheet" href="styles.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
 
+<link href="https://unpkg.com/nanogallery2/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="https://unpkg.com/nanogallery2/dist/jquery.nanogallery2.min.js"></script>
 </head>
 <body>
   <header>
@@ -111,17 +114,20 @@
                  
                  <?php 
                  if (isset($_GET['novos-empreendimentos'])){
-
+                  $sql = mysqli_query($link,"SELECT * FROM empreendimento WHERE publicar=1 and concluido=0 ORDER BY cod DESC") or die ("Houve erro na seleção dos dados" . mysqli_error());  
                  } else if (isset($_GET['empreendimentos-concluidos'])){
-
-                 } else if (isset($_GET['detalhes-empreendimentos'])){
-                 
+                  $sql = mysqli_query($link,"SELECT * FROM empreendimento WHERE publicar=1 and concluido=1 ORDER BY cod DESC") or die ("Houve erro na seleção dos dados" . mysqli_error());  
+                 } else if (isset($_GET['detalhes-empreendimento'])){
+                   $cod = $_GET['cod'];
+                  $sql = mysqli_query($link,"SELECT * FROM empreendimento WHERE publicar=1 and cod=$cod") or die ("Houve erro na seleção dos dados" . mysqli_error());
                  } else {
-
+                  $sql = mysqli_query($link,"SELECT * FROM empreendimento WHERE publicar=1 ORDER BY cod DESC LIMIT 0,5") or die ("Houve erro na seleção dos dados" . mysqli_error());
                  }
-              $sql = mysqli_query($link,"SELECT * FROM empreendimento WHERE publicar=1 ORDER BY cod DESC LIMIT 0,5") or die ("Houve erro na gravação dos dados" . mysqli_error());  
+                
               $row = mysqli_num_rows($sql);
-
+                 if($row == 0) {
+                   echo "Não temos nenhum empreendimento deste tipo no momento.<br> <a href='empreendimentos.php' class='btn btn-outline-secondary btn-center'> Ver todos os empreendimentos</a>";
+                 } else {
               while($row = mysqli_fetch_assoc($sql)){
               $cod_emp = $row['cod'];
               $status = $row['status'];
@@ -137,17 +143,35 @@
             echo "<div class='progress-bar progress-bar-striped progress-bar-animated' role='progressbar' aria-valuenow='$status' aria-valuemin='0' aria-valuemax='100' style='width: $status%'>$status%</div>";
               $sqlf = mysqli_query($link,"SELECT * FROM emp_fotos WHERE cod_emp=$cod_emp ORDER BY cod DESC") or die ("Houve erro na gravação dos dados" . mysqli_error());  
               $rowf = mysqli_num_rows($sqlf);
-                echo "<div class='imagens'>";
+                
+                ?>
+      <div ID="ngy2<?php echo $cod_emp ?>" data-nanogallery2='{
+        "itemsBaseURL": "",
+        "thumbnailWidth": "200",
+        "thumbnailDisplayTransition": "slideUp2",
+        "thumbnailLabel": {
+          "position": "overImageOnTop",
+          "align": "left",
+          "titleMultiLine": true,
+          "descriptionMultiLine": true
+        },
+        "allowHTMLinData": true,
+        "thumbnailHoverEffect2": "image_blur_0px_5px_1000|label_translateX_1_1_1000|label_font-size_1em_2em_2000",
+        "thumbnailAlignment": "center",
+        "galleryFilterTags": true,
+        "thumbnailLevelUp": true
+      }'>
+
+    
+                <?php
               while($rowf = mysqli_fetch_assoc($sqlf)){
                 $nome_foto = $rowf['nome_foto'];
+                $titulo= $rowf['titulo'];
                 $nome_thumb = $rowf['nome_thumb'];
                 $descricao_foto = $rowf['descricao'];
-
-                echo "<img src='admin/fotos/$cod_emp/$nome_thumb'>";
+                echo "<a href='admin/fotos/empreendimentos/$cod_emp/$nome_foto' data-ngthumb='admin/fotos/empreendimentos/$cod_emp/$nome_thumb' data-ngdesc='$descricao_foto'>$titulo</a>";
               
               }
-              echo "</div>";  
-              echo "<div class='videos'>";
               $sqlv = mysqli_query($link,"SELECT * FROM emp_videos WHERE cod_emp=$cod_emp ORDER BY cod DESC") or die ("Houve erro na gravação dos dados" . mysqli_error());  
               $rowv = mysqli_num_rows($sqlv);
                
@@ -155,11 +179,12 @@
                 $nome_video = $rowv['nome'];
                 $id_youtube = $rowv['id_youtube'];
                 $descricao_video = $rowv['descricao'];
-
-                echo "<iframe width='560' height='315' src='https://www.youtube.com/embed/$id_youtube' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>";
+                echo "<a href='https://www.youtube.com/watch?v=$id_youtube' data-ngthumb='https://www.youtube.com/watch?v=$id_youtube' data-ngdesc='$descricao_video'>$nome_video</a>";
+             
               }
               echo "</div></div>";
               }
+            }
             ?>
                  </div>
               
